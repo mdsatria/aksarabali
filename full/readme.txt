@@ -1,1 +1,1 @@
-nanti taruh data dari onedrive di folder ini
+images are placed in this directory
