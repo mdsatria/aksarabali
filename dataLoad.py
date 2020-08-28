@@ -28,4 +28,3 @@ class AksaraBali(Dataset):
             image = self.transform(image)
             
         return(image, y_label)
-        

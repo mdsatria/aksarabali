@@ -1,1 +1,0 @@
-images are placed in this directory
