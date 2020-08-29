@@ -9,7 +9,7 @@ from dataLoad import AksaraBali
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-def check_accuracy(loader, model):
+def check_accuracy(loader, model, acc_type):
     num_correct = 0
     num_samples = 0
     model.eval()
@@ -17,7 +17,6 @@ def check_accuracy(loader, model):
     with torch.no_grad():
         for x, y in loader:
             x = x.to(device=device)
-            x = x.unsqueeze(0)
             y = y.to(device=device)
             
             scores = model(x)
@@ -25,7 +24,7 @@ def check_accuracy(loader, model):
             num_correct += (predictions == y).sum()
             num_samples += predictions.size(0)
         
-        print(f'Got {num_correct} / {num_samples} with accuracy {float(num_correct)/float(num_samples)*100:.2f}') 
+        print(f'{acc_type} got {num_correct} / {num_samples} with accuracy {float(num_correct)/float(num_samples)*100:.2f}') 
     
     model.train()
     
@@ -53,10 +52,11 @@ train_loader = DataLoader(dataset=train_set,
                           shuffle=True)
 
 test_loader = DataLoader(dataset=test_set,
-                          shuffle=False)
+                          shuffle=False,
+                          batch_size=batch_size)
 #test_loader = DataLoader(dataset=test_set, batch_size=batch_size, shuffle=True)
 
-model = torchvision.models.resnet18(pretrained=False)
+model = torchvision.models.resnet18(pretrained=True)
 model.to(device)
 
 criterion = nn.CrossEntropyLoss()
@@ -84,7 +84,7 @@ for epoch in range(num_epoch):
         optimizer.step()
     
     print(f'Cost at epoch {epoch} is {sum(losses)/len(losses)}')
-
-    check_accuracy(test_set, model)
+    check_accuracy(train_set, model, "Train accuracy : ")
+    check_accuracy(test_set, model, "Test accuracy : ")
    
 #torch.save(model, "model1810.pt")
