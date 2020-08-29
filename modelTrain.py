@@ -56,7 +56,7 @@ test_loader = DataLoader(dataset=test_set,
                           batch_size=batch_size)
 #test_loader = DataLoader(dataset=test_set, batch_size=batch_size, shuffle=True)
 
-model = torchvision.models.resnet18(pretrained=True)
+model = torchvision.models.resnet50(pretrained=True)
 model.to(device)
 
 criterion = nn.CrossEntropyLoss()
@@ -84,7 +84,7 @@ for epoch in range(num_epoch):
         optimizer.step()
     
     print(f'Cost at epoch {epoch} is {sum(losses)/len(losses)}')
-    check_accuracy(train_set, model, "Train accuracy : ")
-    check_accuracy(test_set, model, "Test accuracy : ")
+    check_accuracy(train_loader, model, "Train accuracy : ")
+    check_accuracy(test_loader, model, "Test accuracy : ")
    
 #torch.save(model, "model1810.pt")
