@@ -1,5 +1,6 @@
 import torch.nn as nn
 import torch.nn.functional as F
+import torch.optim as optim
 
 class Net(nn.Module):
     def __init__(self):
@@ -53,6 +54,27 @@ class Net(nn.Module):
         return x
     
     
-def train(model, train_load, val_loader, num_epochs, criterion):
+def train(model, train_loader, val_loader, num_epochs, criterion):
     train_losses = []
+    val_losses = []
+    cur_step = 0
+    for epoch in range(num_epochs):
+        running_loss = 0.0
+        model.train()
+        print("Starting epoch " + str(epoch+1))
+        for img1, img2, labels in train_loader:
+            
+            # Forward
+            img1 = img1.to(device)
+            img2 = img2.to(device)
+            labels = labels.to(device)
+            outputs = model(img1, img2)
+            loss = criterion(outputs, labels)
+            
+            # Backward and optimize
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            running_loss += loss.item()
+            
          
