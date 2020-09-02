@@ -1,5 +1,5 @@
 .vscode
 combine.py
 dataStats.py
-images/pass.txt
+data/pass.txt
 __pycache__
