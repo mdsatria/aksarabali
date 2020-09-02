@@ -3,3 +3,5 @@ combine.py
 dataStats.py
 data/pass.txt
 __pycache__
+dataLoader/
+.ipynb_checkpoints

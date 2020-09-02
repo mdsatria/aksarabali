@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
@@ -76,5 +77,23 @@ def train(model, train_loader, val_loader, num_epochs, criterion):
             loss.backward()
             optimizer.step()
             running_loss += loss.item()
+        avg_train_loss = running_loss / len(train_loader)
+        train_losses.append(avg_train_loss)
+        val_running_loss = 0.0
+        
+        # check validation loss after every epoch
+        with torch.no_grad():
+            model.eval()
+            for img1, img2, labels in val_loader:
+                img1 = img1.to(device)
+                img2 = img2.to(device)
+                labels = labels.to(device)
+                loss = criterion(outputs, labels)
+                val_running_loss += loss.item()
+        avg_vall_loss = val_running_loss / len(val_loader)
+        val_losses.append(avg_vall_loss)
+        print('Epoch [{}/{}], Train Loss : {:.4f}, Valid Loss: {:.8f}'.format(epoch+1, num_epochs, avg_train_loss, avg_vall_loss))
+    print('Finished Training')
+    return train_losses, val_losses
             
          
