@@ -5,3 +5,4 @@ data/pass.txt
 __pycache__
 dataLoader/
 .ipynb_checkpoints
+data/Train Original/*.jpg
