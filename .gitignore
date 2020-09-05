@@ -6,3 +6,5 @@ __pycache__
 dataLoader/
 .ipynb_checkpoints
 data/Train Original/*.jpg
+data/Train Augmix/*.jpg
+data/Test/*.jpg
