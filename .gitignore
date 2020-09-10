@@ -5,6 +5,7 @@ data/pass.txt
 __pycache__
 dataLoader/
 .ipynb_checkpoints
-data/Train Original/*.jpg
-data/Train Augmix/*.jpg
-data/Test/*.jpg
+data/Train Original/img/*.jpg
+data/Train Augmix/img/*.jpg
+data/Test/img/*.jpg
+One Shot Learning/*.pt
