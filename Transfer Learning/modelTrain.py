@@ -1,6 +1,7 @@
-import os
+import pandas as pd 
 import numpy as np
-import pandas as pd
+import os
+from PIL import Image
 
 import torch
 import torchvision
@@ -9,9 +10,8 @@ import torch.optim as optim
 import torch.nn.functional as F
 import matplotlib.pyplot as plt
 import torchvision.transforms as transforms
-
-from PIL import Image
 from torch.utils.data import DataLoader, Dataset
+
 from ignite.metrics import Accuracy, Loss, RunningAverage
 from ignite.handlers import ModelCheckpoint, EarlyStopping
 from ignite.engine import Events, create_supervised_trainer, create_supervised_evaluator
@@ -30,12 +30,15 @@ class AksaraBali(Dataset):
     def __getitem__(self, index):
         img_path = os.path.join(self.root_dir, self.annotations.iloc[index,0])
         image = Image.open(img_path).resize((self.height, self.width))
-        y_label = torch.tensor(self.annotations.iloc[index,2], dtype=torch.long)
-        
+        y_label = torch.tensor(self.annotations.iloc[index,2], dtype=torch.long)        
         if self.transform:
-            image = self.transform(image)
-            
+            image = self.transform(image)            
         return(image, y_label)
+    
+def check_accuracy(loader, model, acc_type):
+    num_correct = 0
+    num_samples = 0
+    model.eval()
 
 def score_function(engine):
     val_loss = engine.state.metrics["loss"]
@@ -43,6 +46,12 @@ def score_function(engine):
 
 
 # Set Training Parameters    
+#         print(f'{acc_type} got {num_correct} / {num_samples} with accuracy {float(num_correct)/float(num_samples)*100:.2f}') 
+    
+#     model.train()
+
+# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 in_channel = 3 
 num_classes = 133
 learning_rate = 0.001
